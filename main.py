@@ -41,7 +41,7 @@ class ChunkRequest(BaseModel):
 
 class LLMQueryRequest(BaseModel):
     query: str = Field(..., min_length=1, description="Your question for the LLM.")
-    model: str = Field("llama3-8b-8192", description="Groq model to use.")
+   model: str = Field("llama-3.3-70b-versatile", description="Groq model to use.")
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
