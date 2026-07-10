@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manthan Gupta — Statistics &amp; Data Science</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#12181B;
+  --paper:#F6F3EC;
+  --paper-dim:#EAE6DA;
+  --signal:#3F9C90;
+  --signal-dim:#2c6e65;
+  --amber:#E8A33D;
+  --line: rgba(18,24,27,0.14);
+  --muted:#6B7178;
+  --paper-on-ink: rgba(246,243,236,0.72);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter', sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+
+a{color:inherit;}
+
+.wrap{max-width:1040px; margin:0 auto; padding:0 32px;}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(246,243,236,0.88);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1040px; margin:0 auto; padding:16px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.nav-mark{
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px; letter-spacing:0.02em;
+  font-weight:600;
+}
+.nav-mark span{color:var(--signal);}
+.nav-links{display:flex; gap:28px; list-style:none;}
+.nav-links a{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px; text-transform:lowercase; letter-spacing:0.03em;
+  text-decoration:none; color:var(--muted);
+  border-bottom:1px solid transparent;
+  padding-bottom:2px;
+  transition:color .15s, border-color .15s;
+}
+.nav-links a:hover, .nav-links a:focus-visible{color:var(--ink); border-color:var(--signal);}
+.nav-toggle{display:none;}
+
+/* ---------- hero ---------- */
+.hero{
+  background:var(--ink);
+  color:var(--paper);
+  position:relative;
+  overflow:hidden;
+  padding:96px 0 72px;
+}
+.hero .wrap{
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:48px;
+  align-items:center;
+}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--signal);
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:22px;
+}
+.eyebrow::before{
+  content:""; width:22px; height:1px; background:var(--signal);
+}
+h1.title{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  font-size:clamp(40px, 6vw, 68px);
+  line-height:1.04;
+  letter-spacing:-0.01em;
+}
+h1.title em{
+  font-style:italic; color:var(--signal);
+  font-weight:400;
+}
+.hero-sub{
+  margin-top:22px;
+  max-width:44ch;
+  color:var(--paper-on-ink);
+  font-size:16.5px;
+}
+.hero-meta{
+  margin-top:34px;
+  display:flex; flex-wrap:wrap; gap:10px 24px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  color:var(--paper-on-ink);
+}
+.hero-meta a{text-decoration:none; border-bottom:1px solid rgba(246,243,236,0.3); padding-bottom:1px;}
+.hero-meta a:hover{color:var(--signal); border-color:var(--signal);}
+
+.plot{
+  background:rgba(246,243,236,0.03);
+  border:1px solid rgba(246,243,236,0.14);
+  border-radius:2px;
+  padding:18px 18px 12px;
+}
+.plot-caption{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  color:rgba(246,243,236,0.5);
+  margin-top:10px;
+  letter-spacing:0.01em;
+}
+.plot svg{display:block; width:100%; height:auto;}
+.reg-line{
+  stroke:var(--amber);
+  stroke-width:2;
+  fill:none;
+  stroke-dasharray:520;
+  stroke-dashoffset:520;
+  animation:draw 1.8s ease-out .3s forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.dot{fill:var(--signal); opacity:0; animation:pop .5s ease-out forwards;}
+@keyframes pop{to{opacity:0.85;}}
+
+/* ---------- sections ---------- */
+section{padding:76px 0;}
+section + section{border-top:1px solid var(--line);}
+
+.section-head{
+  display:flex; align-items:baseline; gap:14px;
+  margin-bottom:38px;
+}
+.section-num{
+  font-family:'JetBrains Mono', monospace;
+  color:var(--signal);
+  font-size:13px;
+}
+.section-head h2{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  font-size:28px;
+  letter-spacing:-0.01em;
+}
+.section-head .rule{
+  flex:1; height:1px; background:var(--line);
+}
+
+/* about / education */
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+}
+.about-text p{max-width:56ch; color:#333; margin-bottom:14px;}
+.about-text p:last-child{margin-bottom:0;}
+
+table.edu{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+table.edu caption{
+  text-align:left;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.06em;
+  margin-bottom:10px;
+}
+table.edu th{
+  text-align:left;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; font-weight:500;
+  text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--muted);
+  padding:8px 10px 8px 0;
+  border-bottom:1px solid var(--ink);
+}
+table.edu td{
+  padding:12px 10px 12px 0;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+}
+table.edu td.cpi{
+  font-family:'JetBrains Mono', monospace;
+  color:var(--signal-dim);
+  font-weight:600;
+}
+
+/* projects as figures */
+.figure{
+  padding:30px 0;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:34px;
+}
+.figure:first-of-type{border-top:none; padding-top:0;}
+.fig-tag{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
+  color:var(--signal);
+}
+.fig-tag .fig-date{
+  display:block; color:var(--muted); margin-top:6px; font-size:11px;
+}
+.fig-org{
+  display:block; margin-top:10px; color:#333; font-size:12px; line-height:1.5;
+}
+.fig-body h3{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  font-size:21px;
+  margin-bottom:6px;
+  letter-spacing:-0.01em;
+}
+.fig-objective{
+  color:var(--muted);
+  font-size:14.5px;
+  margin-bottom:14px;
+  font-style:italic;
+}
+.fig-approach{
+  list-style:none;
+  margin-bottom:14px;
+}
+.fig-approach li{
+  position:relative;
+  padding-left:16px;
+  font-size:14.5px;
+  color:#333;
+  margin-bottom:6px;
+}
+.fig-approach li::before{
+  content:"–";
+  position:absolute; left:0; color:var(--signal);
+}
+.fig-result{
+  background:var(--paper-dim);
+  border-left:2px solid var(--amber);
+  padding:12px 16px;
+  font-size:13.5px;
+}
+.fig-result strong{font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); display:block; margin-bottom:6px;}
+
+/* skills table */
+table.skills{width:100%; border-collapse:collapse; font-size:14px;}
+table.skills tr{border-top:1px solid var(--line);}
+table.skills tr:first-child{border-top:none;}
+table.skills td{padding:14px 12px 14px 0; vertical-align:top;}
+table.skills td.label{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--muted);
+  width:180px;
+  white-space:nowrap;
+}
+.chips{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
+  padding:4px 10px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  color:#333;
+}
+
+/* courses */
+.courses{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px 20px;
+}
+.courses div{
+  font-size:13.5px;
+  padding:10px 0;
+  border-top:1px solid var(--line);
+  color:#333;
+}
+.courses div:nth-child(-n+3){border-top:none;}
+
+/* positions */
+.position{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:24px;
+  padding:24px 0;
+  border-top:1px solid var(--line);
+}
+.position:first-of-type{border-top:none; padding-top:0;}
+.position h3{
+  font-family:'Fraunces', serif; font-weight:500; font-size:18px;
+}
+.position .role-date{
+  font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); margin-top:6px; display:block;
+}
+.position ul{list-style:none;}
+.position li{
+  position:relative; padding-left:16px; font-size:14.5px; color:#333; margin-bottom:6px;
+}
+.position li::before{content:"–"; position:absolute; left:0; color:var(--signal);}
+
+/* footer */
+footer{
+  background:var(--ink); color:var(--paper);
+  padding:56px 0 40px;
+}
+.footer-inner{
+  display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;
+}
+footer h2{
+  font-family:'Fraunces', serif; font-weight:500; font-size:30px;
+  max-width:12ch;
+}
+.footer-links{display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
+.footer-links a{
+  font-family:'JetBrains Mono', monospace; font-size:13px;
+  text-decoration:none; color:var(--paper-on-ink);
+  border-bottom:1px solid transparent;
+}
+.footer-links a:hover{color:var(--signal); border-color:var(--signal);}
+.footer-note{
+  margin-top:40px; font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(246,243,236,0.4);
+}
+
+/* focus states */
+a:focus-visible, button:focus-visible{outline:2px solid var(--signal); outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px){
+  .hero .wrap{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr; gap:36px;}
+  .figure{grid-template-columns:1fr; gap:14px;}
+  .courses{grid-template-columns:1fr 1fr;}
+  .courses div:nth-child(-n+3){border-top:1px solid var(--line);}
+  .courses div:nth-child(-n+2){border-top:none;}
+  .position{grid-template-columns:1fr; gap:10px;}
+  .nav-links{gap:16px;}
+}
+@media (max-width: 560px){
+  .wrap{padding:0 20px;}
+  .nav-inner{padding:14px 20px;}
+  .nav-links{display:none;}
+  .courses{grid-template-columns:1fr;}
+  .courses div{border-top:1px solid var(--line) !important;}
+  .courses div:first-child{border-top:none !important;}
+  .footer-inner{flex-direction:column; align-items:flex-start;}
+  .footer-links{align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-mark">M.GUPTA<span>_</span>2026</div>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#positions">roles</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">B.S. Statistics &amp; Data Science — IIT Kanpur</div>
+      <h1 class="title">Manthan Gupta<br><em>finds the signal.</em></h1>
+      <p class="hero-sub">Third-year undergraduate working across NLP, model compression, and applied forecasting — building pipelines that turn messy, high-dimensional data into results that hold up at p ≤ .001.</p>
+      <div class="hero-meta">
+        <a href="mailto:manthang24@iitk.ac.in">manthang24@iitk.ac.in</a>
+        <a href="https://github.com/Manthangupta2006" target="_blank" rel="noopener">github/Manthangupta2006</a>
+        <a href="#" target="_blank" rel="noopener">linkedin/Manthan Gupta</a>
+      </div>
+    </div>
+    <div class="plot">
+      <svg viewBox="0 0 320 220" aria-hidden="true">
+        <!-- axes -->
+        <line x1="30" y1="10" x2="30" y2="190" stroke="rgba(246,243,236,0.18)" stroke-width="1"/>
+        <line x1="30" y1="190" x2="310" y2="190" stroke="rgba(246,243,236,0.18)" stroke-width="1"/>
+        <!-- scatter points (structural distance vs complexity, echoing CGS410 project) -->
+        <g>
+          <circle class="dot" cx="46" cy="168" r="3" style="animation-delay:.05s"/>
+          <circle class="dot" cx="58" cy="150" r="3" style="animation-delay:.08s"/>
+          <circle class="dot" cx="63" cy="172" r="3" style="animation-delay:.11s"/>
+          <circle class="dot" cx="75" cy="140" r="3" style="animation-delay:.14s"/>
+          <circle class="dot" cx="82" cy="158" r="3" style="animation-delay:.17s"/>
+          <circle class="dot" cx="94" cy="120" r="3" style="animation-delay:.20s"/>
+          <circle class="dot" cx="101" cy="146" r="3" style="animation-delay:.23s"/>
+          <circle class="dot" cx="112" cy="132" r="3" style="animation-delay:.26s"/>
+          <circle class="dot" cx="120" cy="110" r="3" style="animation-delay:.29s"/>
+          <circle class="dot" cx="128" cy="128" r="3" style="animation-delay:.32s"/>
+          <circle class="dot" cx="138" cy="98" r="3" style="animation-delay:.35s"/>
+          <circle class="dot" cx="147" cy="118" r="3" style="animation-delay:.38s"/>
+          <circle class="dot" cx="156" cy="86" r="3" style="animation-delay:.41s"/>
+          <circle class="dot" cx="165" cy="104" r="3" style="animation-delay:.44s"/>
+          <circle class="dot" cx="174" cy="78" r="3" style="animation-delay:.47s"/>
+          <circle class="dot" cx="183" cy="92" r="3" style="animation-delay:.50s"/>
+          <circle class="dot" cx="192" cy="66" r="3" style="animation-delay:.53s"/>
+          <circle class="dot" cx="201" cy="84" r="3" style="animation-delay:.56s"/>
+          <circle class="dot" cx="210" cy="58" r="3" style="animation-delay:.59s"/>
+          <circle class="dot" cx="219" cy="72" r="3" style="animation-delay:.62s"/>
+          <circle class="dot" cx="228" cy="48" r="3" style="animation-delay:.65s"/>
+          <circle class="dot" cx="238" cy="62" r="3" style="animation-delay:.68s"/>
+          <circle class="dot" cx="248" cy="40" r="3" style="animation-delay:.71s"/>
+          <circle class="dot" cx="258" cy="54" r="3" style="animation-delay:.74s"/>
+          <circle class="dot" cx="268" cy="32" r="3" style="animation-delay:.77s"/>
+          <circle class="dot" cx="280" cy="44" r="3" style="animation-delay:.80s"/>
+        </g>
+        <!-- fitted regression line -->
+        <path class="reg-line" d="M40,178 L292,26" />
+      </svg>
+      <div class="plot-caption">Fig. 0 — structural load vs. dependency distance, fitted OLS, n≈2.3M tokens</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>About &amp; Education</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a third-year student in the Department of Statistics and Data Science at IIT Kanpur, working at the intersection of computational linguistics, machine learning, and applied statistics. My projects range from parsing 2.3 million tokens across ten Universal Dependencies treebanks to compressing a neural network 141× with under half a percent accuracy loss.</p>
+        <p>Outside coursework, I lead as Secretary of the Dance Club and serve as a Student Guide with the Center for Mental Health and Wellbeing — work that's taught me as much about coordinating people as any regression model has about coordinating data.</p>
+      </div>
+      <table class="edu">
+        <caption>Academic record</caption>
+        <thead>
+          <tr><th>Year</th><th>Degree / Certificate</th><th>Institute</th><th>CPI / %</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2024–Present</td><td>B.S., Statistics &amp; Data Science</td><td>IIT Kanpur</td><td class="cpi">7.0/10</td></tr>
+          <tr><td>2024</td><td>Class XII (CBSE)</td><td>Kiddy's Corner School, Gwalior</td><td class="cpi">91.8%</td></tr>
+          <tr><td>2022</td><td>Class X (CBSE)</td><td>St. Teresa's School, Gwalior</td><td class="cpi">93.8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Key Projects</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="figure">
+      <div>
+        <div class="fig-tag">Fig. 01<span class="fig-date">Jan '26 – May '26</span></div>
+        <span class="fig-org">Course Project, CGS 410<br>Prof. Himanshu Yadav</span>
+      </div>
+      <div class="fig-body">
+        <h3>Empirical Analysis of Intervening Node Complexity</h3>
+        <p class="fig-objective">Testing structural simplicity vs. distance in dependency grammar across 10 languages.</p>
+        <ul class="fig-approach">
+          <li>Engineered a Python NLP pipeline to parse 2.32M tokens across 102,481 sentences from 10 UD treebanks</li>
+          <li>Extracted structural metrics via recursive subtree computation and arc traversal for UPOS tags and node arity</li>
+          <li>Evaluated 2 formal hypotheses using one-sided paired t-tests, Cohen's d, and pooled UPOS enrichment ratios</li>
+          <li>Linked VERB under-representation (ER = 0.71) to structural load minimization within DLT and DDM frameworks</li>
+        </ul>
+        <div class="fig-result">
+          <strong>Result</strong>
+          Confirmed 3 hypotheses at p ≤ .001 across 10 languages (Cohen's d 0.23–0.27); 82%+ of interveners had arity ≤ 1, 86%+ had subtree size ≤ 3.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <div>
+        <div class="fig-tag">Fig. 02<span class="fig-date">Dec '25 – Jan '26</span></div>
+        <span class="fig-org">Electrical Engineering Association, IIT Kanpur</span>
+      </div>
+      <div class="fig-body">
+        <h3>Deep Neural Network Compression &amp; CV</h3>
+        <p class="fig-objective">Reducing model size while preserving predictive performance.</p>
+        <ul class="fig-approach">
+          <li>Built a custom multimodal CNN-MLP architecture from scratch, trained on the Fruits-360 image dataset</li>
+          <li>Engineered a Deep Compression pipeline via magnitude pruning, K-means quantization, and Huffman coding</li>
+          <li>Developed a multimodal fusion model processing LBP texture and Canny edge maps via separate CNN branches</li>
+          <li>Integrated 12 handcrafted HSV color and contour-based shape features for silhouette analysis</li>
+        </ul>
+        <div class="fig-result">
+          <strong>Result</strong>
+          ~141× compression (47.30MB → 0.33MB), 0.37% accuracy loss at 95.65% baseline; 99.7% weight sparsity, 1.03 bits/weight.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <div>
+        <div class="fig-tag">Fig. 03<span class="fig-date">May '26 – Present</span></div>
+        <span class="fig-org">Association of Computer Activities (ACA), IIT Kanpur</span>
+      </div>
+      <div class="fig-body">
+        <h3>DocuMind: Secure AI Document RAG Platform</h3>
+        <p class="fig-objective">A RAG platform using Next.js, FastAPI, PostgreSQL, and 12 REST APIs for document retrieval and chat.</p>
+        <ul class="fig-approach">
+          <li>Built hybrid retrieval combining semantic search (pgvector) and keyword ranking (BM25), returning top-5 cited sources</li>
+          <li>Integrated SSE streaming for real-time LLM responses, secured via Google OAuth, JWT, and HttpOnly cookies</li>
+          <li>Designed tenant-aware vector pipelines scoping queries to specific namespaces to eliminate cross-tenant leakage</li>
+        </ul>
+        <div class="fig-result">
+          <strong>Result</strong>
+          Token-by-token SSE streaming cut perceived response wait time by ~37% versus blocking responses.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <div>
+        <div class="fig-tag">Fig. 04<span class="fig-date">May '26 – Present</span></div>
+        <span class="fig-org">Stamatics, IIT Kanpur</span>
+      </div>
+      <div class="fig-body">
+        <h3>Multi-Agent Forecasting</h3>
+        <p class="fig-objective">A no-regret adaptive ensemble (Hedge + Fixed-Share) for SPY return forecasting, 2010–2024.</p>
+        <ul class="fig-approach">
+          <li>Four agents — OLS (trend), XGBoost (momentum/volatility), LSTM (sequence) — trained on SPY + VIX features</li>
+          <li>Hedge aggregator with Fixed-Share mixing handles non-stationarity, weights updated online each trading day</li>
+          <li>Backtested across diverse market regimes to minimize drawdowns and maximize risk-adjusted returns</li>
+        </ul>
+        <div class="fig-result">
+          <strong>Result</strong>
+          Hedge ensemble reached a Sharpe ratio of 0.38 (+58% over a uniform 0.24 baseline); technical agents ~50% directional accuracy.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <div>
+        <div class="fig-tag">Fig. 05<span class="fig-date">Aug '25 – Nov '25</span></div>
+        <span class="fig-org">Course Project, MTH208<br>Prof. Akash Anand</span>
+      </div>
+      <div class="fig-body">
+        <h3>Pharma Insights Platform</h3>
+        <p class="fig-objective">Automating pharma stock data ingestion for 200+ stocks with a code-free analytics tool.</p>
+        <ul class="fig-approach">
+          <li>Built a reactive 3-layer pipeline (scrape → clean → visualize) using rvest and dplyr inside one R Shiny app</li>
+          <li>Applied log-transformation on CMP data, ran corrplot correlation analysis across 9 financial metrics</li>
+          <li>Designed a reactive dashboard with dynamic filters and interactive Plotly visualizations</li>
+        </ul>
+        <div class="fig-result">
+          <strong>Result</strong>
+          Analyzed 215 pharma stocks across a 6-tab dashboard; collaborated with a 5-member team on end-to-end delivery.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Technical Skills</h2>
+      <span class="rule"></span>
+    </div>
+    <table class="skills">
+      <tr>
+        <td class="label">Languages</td>
+        <td><div class="chips">
+          <span class="chip">C</span><span class="chip">C++</span><span class="chip">Python</span><span class="chip">R</span>
+        </div></td>
+      </tr>
+      <tr>
+        <td class="label">Libraries</td>
+        <td><div class="chips">
+          <span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span><span class="chip">SciPy</span><span class="chip">Plotly</span>
+        </div></td>
+      </tr>
+      <tr>
+        <td class="label">Tools</td>
+        <td><div class="chips">
+          <span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Jupyter</span><span class="chip">SQL</span><span class="chip">FastAPI</span><span class="chip">LaTeX</span><span class="chip">AutoCAD</span>
+        </div></td>
+      </tr>
+    </table>
+
+    <div class="section-head" style="margin-top:52px;">
+      <span class="section-num">03.1</span>
+      <h2 style="font-size:18px;">Relevant Coursework</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="courses">
+      <div>Fundamentals of Computing</div>
+      <div>Introduction to Probability</div>
+      <div>Matrix Algebra &amp; Linear Estimation</div>
+      <div>Statistical Computing</div>
+      <div>Theory of Statistics</div>
+      <div>Elementary Stochastic Processes</div>
+      <div>Data Science Lab I &amp; II</div>
+      <div>Linear Algebra</div>
+      <div>Analysis-I</div>
+    </div>
+  </div>
+</section>
+
+<section id="positions">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Positions of Responsibility</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="position">
+      <div>
+        <h3>Secretary</h3>
+        <span class="role-date">Dance Club, Media &amp; Cultural Council<br>IIT Kanpur — May '25 to May '26</span>
+      </div>
+      <ul>
+        <li>Co-led a three-tier team of 35+ secretaries, securing top ranks in 10+ competitions and executing 20+ major events</li>
+        <li>Secured a Gold Medal in Group Dance at Inter-IIT Cultural Meet 8.0 (2025) among 23 participating IITs</li>
+        <li>Co-developed a digital brand presence, scaling to 4.2K+ Instagram followers and 47K+ YouTube subscribers</li>
+      </ul>
+    </div>
+
+    <div class="position">
+      <div>
+        <h3>Student Guide</h3>
+        <span class="role-date">Center for Mental Health &amp; Wellbeing<br>IIT Kanpur — 2025 to Present</span>
+      </div>
+      <ul>
+        <li>Mentored 6 first-year students to support academic growth, extracurricular involvement, and overall wellbeing</li>
+        <li>Coordinated with the Counselling Service to run Orientation Programme 2025 for 1200+ incoming students</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap footer-inner">
+    <h2>Let's build something worth measuring.</h2>
+    <div class="footer-links">
+      <a href="mailto:manthang24@iitk.ac.in">manthang24@iitk.ac.in</a>
+      <a href="https://github.com/Manthangupta2006" target="_blank" rel="noopener">github.com/Manthangupta2006</a>
+      <a href="#" target="_blank" rel="noopener">linkedin — Manthan Gupta</a>
+    </div>
+  </div>
+  <div class="wrap footer-note">Manthan Gupta — Statistics &amp; Data Science, IIT Kanpur — built from résumé, July 2026</div>
+</footer>
+
+</body>
+</html>
